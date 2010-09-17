@@ -113,10 +113,24 @@ module RMUData
     end
 
     def select(&block)
-      @input_data.select &block
+      result_row_list=Array.new
+      @input_data.each_with_index do |row,i|
+        result_row_list << row if block.call ArrayIndexByStr.new(row,@header)
+      end
+      @input_data=result_row_list
     end
 
     def select_column(&block)
+      length=@input_data.first.length
+      result_column_list=Array.new
+      length.times.each do |column|
+        this_column=Array.new
+        @input_data.each do |row|
+          this_column << row[column] 
+        end
+        result_column_list << this_column if block.call this_column
+      end
+      @input_data=result_column_list
     end
 
   end

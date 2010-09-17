@@ -53,7 +53,7 @@ module RMUData
 
     end
 
-    context "Column Name" do
+    context "column and row manipulations" do
 
       it "should able to set the column name and refer column by name" do
         @table[:header][0]='user'
@@ -183,19 +183,30 @@ module RMUData
 
      end
 
-     it "should be possible to reduce rows" do
+     it "should be possible to reduce rows using column index" do
        result=@table.select do |row|
         row[3] >1
        end
        result.should == [['ruanwz', 'ruanwz', 'ruanwz@gmail.com',2]]
      end
 
-     it "should be possible to reduce columns" do
-       pending
-       result=@table.select_column do |column|
-        column[0].class == Fixnum
+     it "should be possible to reduce rows using column name" do
+       @table[:header]=%w[user github_id email level]
+       @table.select do |row|
+        row['level'] >1
        end
-       result.should == [[2,1]]
+       @table.input_data.should == [['ruanwz', 'ruanwz', 'ruanwz@gmail.com',2]]
+     end
+
+
+     it "should be possible to reduce columns" do
+       @table.select_column do |column|
+        column[0].class == String
+       end
+       @table.input_data.should == [['ruanwz','rainly'],['ruanwz', 'rainly_github'],['ruanwz@gmail.com','rainly@gmail.com']]
+        #['ruanwz', 'ruanwz', 'ruanwz@gmail.com',2],
+        #['rainly', 'rainly_github', 'rainly@gmail.com',1]
+ 
      end
 
     end
