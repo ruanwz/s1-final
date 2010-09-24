@@ -37,11 +37,12 @@ module RMUData
     end
 
     def [](column)
-      if column == :header
+      case column
+      when :header
         @header
-      elsif column.class == Fixnum
+      when Fixnum
         ArrayIndexByStr.new @input_data[column],@header
-      elsif column.class == String
+      when String
         integer_index=@header.find_index column
         return nil unless integer_index
         column_result =[]
