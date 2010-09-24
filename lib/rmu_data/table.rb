@@ -1,6 +1,7 @@
 require 'delegate'
 module RMUData
   class ArrayIndexByStr < DelegateClass(Array)
+
     def initialize(origin_array,header=[])
       #@internal_array = Array.new origin_array
       super origin_array
@@ -46,9 +47,11 @@ module RMUData
         integer_index=@header.find_index column
         return nil unless integer_index
         column_result =[]
+
         @input_data.each do |row|
           column_result<<row[integer_index]
         end
+
         column_result
       end
     end
@@ -88,11 +91,14 @@ module RMUData
     def insert_column(position, new_column,option=Hash.new)
       if option[:header]
         @header.insert position, new_column.first
+
         @input_data.each_with_index do |row, i|
           row.insert position, new_column[i+1]
         end
+
       else
         @header << nil unless @header.empty?
+
         @input_data.each_with_index do |row, i|
           row.insert position, new_column[i]
         end
@@ -116,15 +122,18 @@ module RMUData
 
     def select(&block)
       result_row_list=Array.new
+
       @input_data.each_with_index do |row,i|
         result_row_list << row if block.call ArrayIndexByStr.new(row,@header)
       end
+
       @input_data=result_row_list
     end
 
     def select_column(&block)
       length=@input_data.first.length
       result_column_list=Array.new
+
       length.times.each do |column|
         this_column=Array.new
         @input_data.each do |row|
@@ -132,6 +141,7 @@ module RMUData
         end
         result_column_list << this_column if block.call this_column
       end
+
       @input_data=result_column_list
     end
 
