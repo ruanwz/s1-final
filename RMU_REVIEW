@@ -1,0 +1,9 @@
+The code is in the table.rb
+It introduce a RMUData module. In this module, there is 2 classes:ArrayIndexByStr and Table.
+
+Table is the main data structure. ArrayIndexByStr is used for associating the index with the header in the data rows.
+
+The key difference of ArrayIndexByStr and Array is that when ["id"] raise the TypeError, it will try to find the correct index by using @header.find_index("id"), then it use this index to find the element again.
+
+In the table class, all the data is saved in @input_data and @header. All operations are taken on these 2 instance varialbes.
+
