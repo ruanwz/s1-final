@@ -1,5 +1,6 @@
+require 'delegate'
 module RMUData
-  class ArrayIndexByStr < Array
+  class ArrayIndexByStr < DelegateClass(Array)
     def initialize(origin_array,header=[])
       #@internal_array = Array.new origin_array
       super origin_array
